@@ -48,6 +48,51 @@ function insertNode(root, data) {
     return root;
 }
 
+function deleteNode(root, data) {
+    if (root === null) {
+        return root
+    }
+
+    if (root.data > data) {
+        root.left = deleteNode(root.left, data);
+        return root;
+    } else if (root.data < data) {
+        root.right = deleteNode(root.right, data);
+        return root;
+    }
+
+    //if only one child node
+    if (root.left === null) {
+        let temp = root.right;
+        delete root;
+        return temp;
+    } else if (root.right === null) {
+        let temp = root.left;
+        delete root;
+        return temp;
+    } //if both child nodes exist
+    else {
+        let successorParent = root;
+        let successor = root.right;
+        while (successor.left !== null) {
+            successorParent = successor;
+            successor = successor.left;
+        }
+
+        if (successorParent !== root) {
+            successorParent.left = successor.right;
+        } else {
+            successorParent.right = successor.right;
+        }
+
+        root.data = successor.data;
+
+        delete successor;
+        return root;
+    }
+
+}
+
 const displayTree = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -72,8 +117,9 @@ let myTree = new Tree(sortedArray);
 insert(2);
 insert(4);
 insert(7);
+deleteNode(myTree.root, 15);
 
-prettyPrint(myTree.root);
+displayTree(myTree.root);
 
 
 //UI
