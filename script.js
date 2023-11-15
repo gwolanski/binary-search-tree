@@ -27,16 +27,37 @@ function buildTree(arr, start, end) {
     return node;
 }
 
-const prettyPrint = (node, prefix = "", isLeft = true) => {
+// let root = null;
+
+function insert(data) {
+    myTree.root = insertNode(myTree.root, data);
+} 
+
+function insertNode(root, data) {
+    if (root === null) {
+        root = new Node(data);
+        return root;
+    }
+
+    if (data < root.data) {
+        root.left = insertNode(root.left, data);
+    } else if (data > root.data) {
+        root.right = insertNode(root.right, data);
+    }
+
+    return root;
+}
+
+const displayTree = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
     }
     if (node.right !== null) {
-      prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+      displayTree(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
     }
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     if (node.left !== null) {
-      prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+      displayTree(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   };
 
@@ -47,7 +68,13 @@ let sortedArray = unsortedArray.slice().sort(function(a, b) {
 
 console.log("sortedArray: " + sortedArray);
 let myTree = new Tree(sortedArray);
+
+insert(2);
+insert(4);
+insert(7);
+
 prettyPrint(myTree.root);
+
 
 //UI
 //allow user to enter in number to add to array
