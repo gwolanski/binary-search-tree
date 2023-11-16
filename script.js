@@ -90,7 +90,22 @@ function deleteNode(root, data) {
         delete successor;
         return root;
     }
+}
 
+function find(root, value) {
+    if (root === null) {
+        return root
+    }
+
+    if (value == root.data) {
+        return root;
+    } else if (value < root.data) {
+        return find(root.left, value);
+    } else if (value > root.data) {
+        return find(root.right, value);
+    }
+
+    return root;
 }
 
 const displayTree = (node, prefix = "", isLeft = true) => {
@@ -117,7 +132,9 @@ let myTree = new Tree(sortedArray);
 insert(2);
 insert(4);
 insert(7);
-deleteNode(myTree.root, 15);
+deleteNode(myTree.root, 3);
+let findThis = find(myTree.root, 1);
+console.log("find: " + findThis);
 
 displayTree(myTree.root);
 
