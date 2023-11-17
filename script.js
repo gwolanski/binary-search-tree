@@ -8,104 +8,122 @@ class Node {
 
 class Tree {
     constructor(arr) {
-        this.root = buildTree(arr, 0, arr.length - 1);
-    }
-}
-
-function buildTree(arr, start, end) {
-  
-    if (start > end) {
-        return null;
+        this.root = this.buildTree(arr, 0, arr.length - 1);
     }
 
-    let mid = Math.floor((start + end)/2);
-
-    let node = new Node(arr[mid]);
-    node.left = buildTree(arr, start, mid - 1);
-    node.right = buildTree(arr, mid + 1, end);
-
-    return node;
-}
-
-// let root = null;
-
-function insert(data) {
-    myTree.root = insertNode(myTree.root, data);
-} 
-
-function insertNode(root, data) {
-    if (root === null) {
-        root = new Node(data);
-        return root;
-    }
-
-    if (data < root.data) {
-        root.left = insertNode(root.left, data);
-    } else if (data > root.data) {
-        root.right = insertNode(root.right, data);
-    }
-
-    return root;
-}
-
-function deleteNode(root, data) {
-    if (root === null) {
-        return root
-    }
-
-    if (root.data > data) {
-        root.left = deleteNode(root.left, data);
-        return root;
-    } else if (root.data < data) {
-        root.right = deleteNode(root.right, data);
-        return root;
-    }
-
-    //if only one child node
-    if (root.left === null) {
-        let temp = root.right;
-        delete root;
-        return temp;
-    } else if (root.right === null) {
-        let temp = root.left;
-        delete root;
-        return temp;
-    } //if both child nodes exist
-    else {
-        let successorParent = root;
-        let successor = root.right;
-        while (successor.left !== null) {
-            successorParent = successor;
-            successor = successor.left;
+    insert(data) {
+        this.root = this.insertNode(this.root, data);
+    } 
+    
+    insertNode(root, data) {
+        if (root === null) {
+            root = new Node(data);
+            return root;
         }
+    
+        if (data < root.data) {
+            root.left = this.insertNode(root.left, data);
+        } else if (data > root.data) {
+            root.right = this.insertNode(root.right, data);
+        }
+    
+        return root;
+    }
 
-        if (successorParent !== root) {
-            successorParent.left = successor.right;
+    deleteNode(root, data) {
+        if (root === null) {
+            return root
+        }
+    
+        if (data < root.data) {
+            root.left = this.deleteNode(root.left, data);
+        } else if (data > root.data) {
+            root.right = this.deleteNode(root.right, data);
         } else {
-            successorParent.right = successor.right;
+            //if only one child node
+            if (root.left === null) {
+                return root.right;
+            } else if (root.right === null) {
+                return root.left;
+            }
+        
+             //if both child nodes exist
+            let successorParent = root;
+            let successor = root.right;
+            while (successor.left !== null) {
+                successorParent = successor;
+                successor = successor.left;
+            }
+
+            if (successorParent !== root) {
+                successorParent.left = successor.right;
+            } else {
+                successorParent.right = successor.right;
+            }
+
+            root.data = successor.data;
         }
+            return root;
+    }
 
-        root.data = successor.data;
-
-        delete successor;
+    find(root, value) {
+        if (root === null) {
+            return root
+        }
+    
+        if (value == root.data) {
+            return root;
+        } else if (value < root.data) {
+            return this.find(root.left, value);
+        } else if (value > root.data) {
+            return this.find(root.right, value);
+        }
+    
         return root;
     }
-}
 
-function find(root, value) {
-    if (root === null) {
-        return root
+    levelOrder(callback = null) {
+        if (this.root === null) {
+            return [];
+        }
+    
+        let result = [];
+        let queue = [this.root];
+    
+        while (queue.length > 0) {
+            let current = queue.shift();
+            result.push(current.data);
+    
+            if (callback && typeof callback === "function") {
+                callback(current);
+            }
+    
+            if (current.left) {
+                queue.push(current.left);
+            }
+    
+            if (current.right) {
+                queue.push(current.right);
+            }
+        }
+        return result;
     }
 
-    if (value == root.data) {
-        return root;
-    } else if (value < root.data) {
-        return find(root.left, value);
-    } else if (value > root.data) {
-        return find(root.right, value);
+    buildTree(arr, start, end) {
+  
+        if (start > end) {
+            return null;
+        }
+    
+        let mid = Math.floor((start + end)/2);
+    
+        let node = new Node(arr[mid]);
+        node.left = this.buildTree(arr, start, mid - 1);
+        node.right = this.buildTree(arr, mid + 1, end);
+    
+        return node;
     }
 
-    return root;
 }
 
 const displayTree = (node, prefix = "", isLeft = true) => {
@@ -126,15 +144,20 @@ let sortedArray = unsortedArray.slice().sort(function(a, b) {
         return a - b;
     })
 
-console.log("sortedArray: " + sortedArray);
 let myTree = new Tree(sortedArray);
 
-insert(2);
-insert(4);
-insert(7);
-deleteNode(myTree.root, 3);
-let findThis = find(myTree.root, 1);
-console.log("find: " + findThis);
+myTree.insert(2);
+myTree.insert(4);
+myTree.insert(7);
+myTree.deleteNode(myTree.root, 3);
+let findThis = myTree.find(myTree.root, 1);
+console.log("find: " + findThis.data);
+
+const resultWithoutCB = myTree.levelOrder();
+
+myTree.levelOrder((node) => {
+    console.log("processing node: ", node.data);
+})
 
 displayTree(myTree.root);
 
