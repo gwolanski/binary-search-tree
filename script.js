@@ -87,7 +87,7 @@ class Tree {
             return [];
         }
     
-        let result = [];
+        const result = [];
         let queue = [this.root];
     
         while (queue.length > 0) {
@@ -107,6 +107,39 @@ class Tree {
             }
         }
         return result;
+    }
+
+    //LEFT OFF HERE!!!
+    inOrder(callback = null) {
+        if (this.root === null) {
+           return []; 
+        }
+
+        const result = [];
+
+        const inOrderTraversal = (node) => {
+            if (node) {
+                inOrderTraversal(node.left);
+                result.push(node.data);
+            
+                if (callback && typeof callback == "function") {
+                callback(node);
+            }
+            inOrderTraversal(node.right); 
+            }
+        };
+
+        inOrderTraversal(this.root);
+
+        return result;
+    }
+
+    preOrder(callback = null) {
+        console.log("hello");
+    }
+
+    postOrder(callback = null) {
+        console.log("hey");
     }
 
     buildTree(arr, start, end) {
@@ -158,6 +191,8 @@ const resultWithoutCB = myTree.levelOrder();
 myTree.levelOrder((node) => {
     console.log("processing node: ", node.data);
 })
+
+myTree.inOrder((node) => console.log(node.data));
 
 displayTree(myTree.root);
 
