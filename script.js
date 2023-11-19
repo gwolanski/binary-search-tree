@@ -109,7 +109,6 @@ class Tree {
         return result;
     }
 
-    //LEFT OFF HERE!!!
     inOrder(callback = null) {
         if (this.root === null) {
            return []; 
@@ -159,7 +158,29 @@ class Tree {
     }
 
     postOrder(callback = null) {
-        console.log("hey");
+        if (this.root === null) {
+            return []; 
+         }
+ 
+         const result = [];
+ 
+         const postOrderTraversal = (node) => {
+
+            if (node) {
+                postOrderTraversal(node.left); 
+                postOrderTraversal(node.right);  
+                result.push(node.data);
+             
+                 if (callback && typeof callback == "function") {
+                 callback(node);
+             }
+
+             }
+         };
+ 
+         postOrderTraversal(this.root);
+ 
+         return result;
     }
 
     buildTree(arr, start, end) {
@@ -204,7 +225,6 @@ myTree.insert(4);
 myTree.insert(7);
 myTree.deleteNode(myTree.root, 3);
 let findThis = myTree.find(myTree.root, 1);
-console.log("find: " + findThis.data);
 
 const resultWithoutCB = myTree.levelOrder();
 
@@ -212,7 +232,7 @@ myTree.levelOrder((node) => {
     console.log("processing node: ", node.data);
 })
 
-myTree.preOrder((node) => console.log(node.data));
+myTree.postOrder((node) => console.log(node.data));
 
 displayTree(myTree.root);
 
