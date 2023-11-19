@@ -135,7 +135,27 @@ class Tree {
     }
 
     preOrder(callback = null) {
-        console.log("hello");
+        if (this.root === null) {
+            return []; 
+         }
+ 
+         const result = [];
+ 
+         const preOrderTraversal = (node) => {
+             if (node) {
+                 result.push(node.data);
+             
+                 if (callback && typeof callback == "function") {
+                 callback(node);
+             }
+             preOrderTraversal(node.left); 
+             preOrderTraversal(node.right);
+             }
+         };
+ 
+         preOrderTraversal(this.root);
+ 
+         return result;
     }
 
     postOrder(callback = null) {
@@ -192,7 +212,7 @@ myTree.levelOrder((node) => {
     console.log("processing node: ", node.data);
 })
 
-myTree.inOrder((node) => console.log(node.data));
+myTree.preOrder((node) => console.log(node.data));
 
 displayTree(myTree.root);
 
