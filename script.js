@@ -285,18 +285,25 @@ const displayTree = (node, prefix = "", isLeft = true) => {
     }
   };
 
-let unsortedArray = [3, 1, 20, 15, 4, 6, 10]
+let unsortedArray = [];
+
+for (let i = 0; i < 7; i++) {
+    const randomNumber = Math.floor(Math.random() * 100);
+    unsortedArray.push(randomNumber);
+}
+
+console.log("unsortedArray: " + unsortedArray)
 let sortedArray = unsortedArray.slice().sort(function(a, b) {
         return a - b;
     })
 
 let myTree = new Tree(sortedArray);
 
-myTree.insert(2);
-myTree.insert(4);
-myTree.insert(7);
-myTree.insert(21);
-myTree.insert(22);
+// myTree.insert(2);
+// myTree.insert(4);
+// myTree.insert(7);
+// myTree.insert(21);
+// myTree.insert(22);
 // myTree.insert(23);
 
 // myTree.deleteNode(myTree.root, 0);
