@@ -257,6 +257,19 @@ class Tree {
         }
     }
 
+    rebalance(root) {
+        if ((this.isBalanced(root) === true) || (root === null)) {
+            return null;
+        }
+
+        let newArray = this.inOrder();
+        console.log("newArray: " + newArray);
+
+        this.root = this.buildTree(newArray, 0, newArray.length - 1);
+
+        return this.root;
+    }
+
 }
 
 const displayTree = (node, prefix = "", isLeft = true) => {
@@ -284,6 +297,7 @@ myTree.insert(4);
 myTree.insert(7);
 myTree.insert(21);
 myTree.insert(22);
+// myTree.insert(23);
 
 // myTree.deleteNode(myTree.root, 0);
 let findThis = myTree.find(myTree.root, 7);
@@ -301,6 +315,8 @@ let nodeDepth = myTree.depth(findThis);
 console.log("nodeDepth: " + nodeDepth);
 
 console.log("isBalanced: " + myTree.isBalanced(myTree.root));
+
+let rebalanceStuff = myTree.rebalance(myTree.root);
 
 displayTree(myTree.root);
 
