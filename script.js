@@ -68,7 +68,7 @@ class Tree {
 
     find(root, value) {
         if (root === null) {
-            return root
+            return null;
         }
     
         if (value == root.data) {
@@ -183,6 +183,48 @@ class Tree {
          return result;
     }
 
+    //use this.find() to find node first, then plug that variable into this function
+    height(node) {
+        if (node === null) {
+            return null;
+        }
+
+        const leftHeight = this.height(node.left);
+        const rightHeight = this.height(node.right);
+
+        return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    //use this.find() to find node first, then plug that variable into this function
+    depth(node) {        
+        if (node === null) {
+            return null;
+        }
+
+        let nodeDepth = -1;
+        let level = 0;
+        let queue = [this.root];
+    
+        while (queue.length > 0) {
+            const queueLength = queue.length;
+            for (let i = 0; i < queueLength; i++) {
+                let current = queue.shift();
+                if (current.data === node.data) {
+                    nodeDepth = level;
+                }
+                if (current.left) {
+                    queue.push(current.left);
+                }
+                if (current.right) {
+                    queue.push(current.right);
+                }
+            }
+            level++;
+        }
+
+        return nodeDepth;
+    }   
+
     buildTree(arr, start, end) {
   
         if (start > end) {
@@ -223,16 +265,20 @@ let myTree = new Tree(sortedArray);
 myTree.insert(2);
 myTree.insert(4);
 myTree.insert(7);
-myTree.deleteNode(myTree.root, 3);
-let findThis = myTree.find(myTree.root, 1);
+// myTree.deleteNode(myTree.root, 0);
+let findThis = myTree.find(myTree.root, 7);
 
 const resultWithoutCB = myTree.levelOrder();
 
-myTree.levelOrder((node) => {
-    console.log("processing node: ", node.data);
-})
+// myTree.levelOrder((node) => {
+//     console.log("processing node: ", node.data);
+// })
 
-myTree.postOrder((node) => console.log(node.data));
+// myTree.postOrder((node) => console.log(node.data));
+// let nodeHeight = myTree.height(findThis);
+// console.log ("nodeHeight: " + nodeHeight);
+let nodeDepth = myTree.depth(findThis);
+console.log("nodeDepth: " + nodeDepth);
 
 displayTree(myTree.root);
 
