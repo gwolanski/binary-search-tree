@@ -14,6 +14,21 @@ class Tree {
     insert(data) {
         this.root = this.insertNode(this.root, data);
     } 
+
+    buildTree(arr, start, end) {
+  
+        if (start > end) {
+            return null;
+        }
+    
+        let mid = Math.floor((start + end)/2);
+    
+        let node = new Node(arr[mid]);
+        node.left = this.buildTree(arr, start, mid - 1);
+        node.right = this.buildTree(arr, mid + 1, end);
+    
+        return node;
+    }
     
     insertNode(root, data) {
         if (root === null) {
@@ -225,19 +240,21 @@ class Tree {
         return nodeDepth;
     }   
 
-    buildTree(arr, start, end) {
-  
-        if (start > end) {
+    isBalanced(root) {
+        if (root === null) {
             return null;
         }
-    
-        let mid = Math.floor((start + end)/2);
-    
-        let node = new Node(arr[mid]);
-        node.left = this.buildTree(arr, start, mid - 1);
-        node.right = this.buildTree(arr, mid + 1, end);
-    
-        return node;
+
+        const leftHeight = this.height(root.left);
+        const rightHeight = this.height(root.right);
+        console.log("leftHeight: " + leftHeight);
+        console.log("rightHeight: " + rightHeight);
+
+        if ((leftHeight - rightHeight) > 1 || (rightHeight - leftHeight) > 1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
@@ -265,6 +282,9 @@ let myTree = new Tree(sortedArray);
 myTree.insert(2);
 myTree.insert(4);
 myTree.insert(7);
+myTree.insert(21);
+myTree.insert(22);
+
 // myTree.deleteNode(myTree.root, 0);
 let findThis = myTree.find(myTree.root, 7);
 
@@ -279,6 +299,8 @@ const resultWithoutCB = myTree.levelOrder();
 // console.log ("nodeHeight: " + nodeHeight);
 let nodeDepth = myTree.depth(findThis);
 console.log("nodeDepth: " + nodeDepth);
+
+console.log("isBalanced: " + myTree.isBalanced(myTree.root));
 
 displayTree(myTree.root);
 
