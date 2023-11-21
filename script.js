@@ -41,7 +41,7 @@ class Tree {
         } else if (data > root.data) {
             root.right = this.insertNode(root.right, data);
         }
-    
+
         return root;
     }
 
@@ -78,7 +78,8 @@ class Tree {
 
             root.data = successor.data;
         }
-            return root;
+            
+        return root;
     }
 
     find(root, value) {
@@ -93,7 +94,7 @@ class Tree {
         } else if (value > root.data) {
             return this.find(root.right, value);
         }
-    
+        
         return root;
     }
 
@@ -121,6 +122,7 @@ class Tree {
                 queue.push(current.right);
             }
         }
+        
         return result;
     }
 
@@ -247,8 +249,6 @@ class Tree {
 
         const leftHeight = this.height(root.left);
         const rightHeight = this.height(root.right);
-        console.log("leftHeight: " + leftHeight);
-        console.log("rightHeight: " + rightHeight);
 
         if ((leftHeight - rightHeight) > 1 || (rightHeight - leftHeight) > 1) {
             return false;
@@ -285,6 +285,10 @@ const displayTree = (node, prefix = "", isLeft = true) => {
     }
   };
 
+
+//TESTING - DRIVER SCRIPT
+
+// Create a binary search tree from an array of random numbers < 100. You can create a function that returns an array of random numbers every time you call it if you wish.
 let unsortedArray = [];
 
 for (let i = 0; i < 7; i++) {
@@ -297,41 +301,56 @@ let sortedArray = unsortedArray.slice().sort(function(a, b) {
         return a - b;
     })
 
-let myTree = new Tree(sortedArray);
+let myTree = new Tree(sortedArray); 
 
-// myTree.insert(2);
-// myTree.insert(4);
-// myTree.insert(7);
-// myTree.insert(21);
-// myTree.insert(22);
-// myTree.insert(23);
+// Confirm that the tree is balanced by calling isBalanced.
+console.log("isBalanced before: " + myTree.isBalanced(myTree.root));
 
-// myTree.deleteNode(myTree.root, 0);
-let findThis = myTree.find(myTree.root, 7);
+// Print out all elements in level, pre, post, and in order.
+let levelOrderResult = myTree.levelOrder();
+console.log("levelOrder Result before: " + levelOrderResult);
 
-const resultWithoutCB = myTree.levelOrder();
+let inOrderResult = myTree.inOrder();
+console.log("inOrder Result before: " + inOrderResult);
 
-// myTree.levelOrder((node) => {
-//     console.log("processing node: ", node.data);
-// })
+let preOrderResult = myTree.preOrder();
+console.log("preOrder Result before: " + preOrderResult);
 
-// myTree.postOrder((node) => console.log(node.data));
-// let nodeHeight = myTree.height(findThis);
-// console.log ("nodeHeight: " + nodeHeight);
-let nodeDepth = myTree.depth(findThis);
-console.log("nodeDepth: " + nodeDepth);
-
-console.log("isBalanced: " + myTree.isBalanced(myTree.root));
-
-let rebalanceStuff = myTree.rebalance(myTree.root);
+let postOrderResult = myTree.postOrder();
+console.log("postOrder Result before: " + postOrderResult);
 
 displayTree(myTree.root);
 
+// Unbalance the tree by adding several numbers > 100.
+myTree.insert(Math.floor((Math.random() * 100) + 100));
+myTree.insert(Math.floor((Math.random() * 100) + 100));
+myTree.insert(Math.floor((Math.random() * 100) + 100));
+myTree.insert(Math.floor((Math.random() * 100) + 100));
+myTree.insert(Math.floor((Math.random() * 100) + 100));
+myTree.insert(Math.floor((Math.random() * 100) + 100));
 
-//UI
-//allow user to enter in number to add to array
-//each time a number is submitted, search through the existing array and make sure the number doesn't already exist
-//if the number is already in the list, throw an error; if not, add it to the list and update display
+// Confirm that the tree is unbalanced by calling isBalanced.
+console.log("isBalanced after inserts: " + myTree.isBalanced(myTree.root));
 
+displayTree(myTree.root);
 
+// Balance the tree by calling rebalance.
+myTree.rebalance(myTree.root);
 
+// Confirm that the tree is balanced by calling isBalanced.
+console.log("isBalanced after rebalance: " + myTree.isBalanced(myTree.root));
+
+// Print out all elements in level, pre, post, and in order.
+let levelOrderResultAfter = myTree.levelOrder();
+console.log("levelOrder Result after: " + levelOrderResultAfter);
+
+let inOrderResultAfter = myTree.inOrder();
+console.log("inOrder Result after: " + inOrderResultAfter);
+
+let preOrderResultAfter = myTree.preOrder();
+console.log("preOrder Result after: " + preOrderResultAfter);
+
+let postOrderResultAfter = myTree.postOrder();
+console.log("postOrder Result after: " + postOrderResultAfter);
+
+displayTree(myTree.root);
